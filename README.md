@@ -1,7 +1,7 @@
 # Masonry Grid / Waterfall Layout (React Native + Expo + TypeScript)
 
-Данный проект реализует универсальный компонент **Masonry Grid / Waterfall Layout**, аналогичный Pinterest, для мобильного UI-kit на React Native.  
-Сетка автоматически распределяет карточки по колонкам так, чтобы общая высота колонок была максимально сбалансирована.
+Проект: UI-kit мобильного приложения
+Задача: Реализовать компонент **Masonry Grid / Waterfall Layout**
 
 ---
 
