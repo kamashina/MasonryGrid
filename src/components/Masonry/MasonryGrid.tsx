@@ -5,6 +5,8 @@ import {
   useWindowDimensions,
   View,
   LayoutChangeEvent,
+  StyleProp,
+  ViewStyle,
 } from "react-native";
 import { useMasonryColumns } from "../../hooks/useMasonryColumns";
 
@@ -15,6 +17,10 @@ type Props<T> = {
   paddingHorizontal?: number;
   rowGap?: number;
   renderItem: (item: T, index: number) => React.ReactNode;
+  style?: StyleProp<ViewStyle>;
+  contentContainerStyle?: StyleProp<ViewStyle>;
+  columnStyle?: StyleProp<ViewStyle>;
+  itemWrapperStyle?: StyleProp<ViewStyle>;
 };
 
 const MasonryGrid = <T,>({
@@ -24,6 +30,10 @@ const MasonryGrid = <T,>({
   columnsCount = 3,
   paddingHorizontal = 16,
   rowGap = 8,
+  style,
+  contentContainerStyle,
+  columnStyle,
+  itemWrapperStyle,
 }: Props<T>) => {
   const { width: screenWidth } = useWindowDimensions();
   const [heights, setHeights] = useState<Record<number, number>>({});
@@ -49,16 +59,28 @@ const MasonryGrid = <T,>({
 
   return (
     <ScrollView
-      contentContainerStyle={[styles.scrollContent, { paddingHorizontal }]}
+      style={[styles.scroll, style]}
+      contentContainerStyle={[
+        styles.scrollContent,
+        { paddingHorizontal },
+        contentContainerStyle,
+      ]}
       showsVerticalScrollIndicator={false}
     >
       <View style={[styles.columnsContainer, { columnGap }]}>
         {columns.map((column, columnIndex) => (
-          <View key={`column-${columnIndex}`} style={{ flex: 1, rowGap }}>
+          <View
+            key={`column-${columnIndex}`}
+            style={[styles.column, columnStyle, { rowGap }]}
+          >
             {column.map(({ item, index }) => (
               <View
                 key={index}
-                style={{ width: columnWidth }}
+                style={[
+                  styles.itemWrapper,
+                  { width: columnWidth },
+                  itemWrapperStyle,
+                ]}
                 onLayout={(e) => handleItemLayout(index, e)}
               >
                 {renderItem(item, index)}
@@ -72,12 +94,24 @@ const MasonryGrid = <T,>({
 };
 
 const styles = StyleSheet.create({
+  scroll: {
+    flex: 1,
+  },
   scrollContent: {
+    paddingTop: 8,
     paddingBottom: 24,
   },
   columnsContainer: {
     flexDirection: "row",
     alignItems: "flex-start",
+    alignSelf: "stretch",
+  },
+  column: {
+    flex: 1,
+  },
+  itemWrapper: {
+    borderRadius: 16,
+    overflow: "hidden",
   },
 });
 
