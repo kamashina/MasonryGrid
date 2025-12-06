@@ -26,27 +26,22 @@ const getShortestColumnIndex = <T>(columns: Column<T>[]) =>
 export const useMasonryColumns = <T>(
   data: T[],
   columnsCount: number,
-  verticalGap: number,
-  heights: Record<number, number>,
-  defaultHeight = 150
+  heights: Record<number, number>
 ): ColumnItem<T>[][] => {
   return useMemo(() => {
     const columns = data.reduce<Column<T>[]>((cols, item, index) => {
-      console.log(cols);
-
-      const itemHeight = heights[index] ?? defaultHeight;
       const targetIndex = getShortestColumnIndex(cols);
 
       return cols.map((col, idx) =>
         idx === targetIndex
           ? {
               items: [...col.items, { item, index }],
-              totalHeight: col.totalHeight + itemHeight + verticalGap,
+              totalHeight: col.totalHeight + heights[index],
             }
           : col
       );
     }, createInitialColumns<T>(columnsCount));
 
     return columns.map((col) => col.items);
-  }, [data, columnsCount, verticalGap, heights, defaultHeight]);
+  }, [data, columnsCount, heights]);
 };

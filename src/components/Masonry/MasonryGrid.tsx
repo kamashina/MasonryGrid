@@ -29,7 +29,6 @@ const MasonryGrid = <T,>({
   renderItem,
   columnsCount = 3,
   paddingHorizontal = 16,
-  rowGap = 8,
   style,
   contentContainerStyle,
   columnStyle,
@@ -55,7 +54,7 @@ const MasonryGrid = <T,>({
     []
   );
 
-  const columns = useMasonryColumns(data, columnsCount, rowGap, heights);
+  const columns = useMasonryColumns(data, columnsCount, heights);
 
   return (
     <ScrollView
@@ -71,7 +70,7 @@ const MasonryGrid = <T,>({
         {columns.map((column, columnIndex) => (
           <View
             key={`column-${columnIndex}`}
-            style={[styles.column, columnStyle, { rowGap }]}
+            style={[styles.column, columnStyle]}
           >
             {column.map(({ item, index }) => (
               <View
@@ -108,6 +107,7 @@ const styles = StyleSheet.create({
   },
   column: {
     flex: 1,
+    gap: 8,
   },
   itemWrapper: {
     borderRadius: 16,
