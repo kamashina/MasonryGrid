@@ -20,7 +20,7 @@ const randomBetween = (min: number, max: number) =>
 
 const createItem = (index: number): MasonryItem => {
   const color = COLORS[index % COLORS.length];
-  const descriptionLength = randomBetween(0, 3);
+  const descriptionLength = randomBetween(0, 10);
 
   const description =
     "Тестовое задание для React Native-разработчика Проект: UI-kit мобильного приложения Задача: Реализовать компонент Masonry Grid / Waterfall Layout"
@@ -72,9 +72,7 @@ const App = () => {
 
         <MasonryGrid
           data={data}
-          renderItem={(item, width) => (
-            <MasonryCard key={item.id} item={item} width={width} />
-          )}
+          renderItem={(item) => <MasonryCard key={item.id} item={item} />}
         />
       </SafeAreaView>
     </SafeAreaProvider>

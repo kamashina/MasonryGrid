@@ -8,22 +8,11 @@ export type MasonryItem = {
   color: string;
 };
 
-type Props = {
-  item: MasonryItem;
-  width: number;
-};
+type Props = { item: MasonryItem };
 
-const MasonryCard: FC<Props> = ({ item, width }) => {
+const MasonryCard: FC<Props> = ({ item }) => {
   return (
-    <View
-      style={[
-        styles.card,
-        {
-          width,
-          backgroundColor: item.color,
-        },
-      ]}
-    >
+    <View style={[styles.card, { backgroundColor: item.color }]}>
       <Text style={styles.title}>{item.title}</Text>
       {!!item.description && (
         <Text style={styles.description}>{item.description}</Text>

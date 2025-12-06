@@ -1,12 +1,12 @@
 import { useMemo } from "react";
 
-type IndexedItem<T> = {
+type ColumnItem<T> = {
   item: T;
   index: number;
 };
 
 type Column<T> = {
-  items: IndexedItem<T>[];
+  items: ColumnItem<T>[];
   totalHeight: number;
 };
 
@@ -24,21 +24,24 @@ const getShortestColumnIndex = <T>(columns: Column<T>[]) =>
   );
 
 export const useMasonryColumns = <T>(
-  data: IndexedItem<T>[],
+  data: T[],
   columnsCount: number,
   verticalGap: number,
   heights: Record<number, number>,
   defaultHeight = 150
-): IndexedItem<T>[][] => {
+): ColumnItem<T>[][] => {
   return useMemo(() => {
-    const columns = data.reduce<Column<T>[]>((cols, item) => {
+    const columns = data.reduce<Column<T>[]>((cols, item, index) => {
+      console.log(cols);
+
+      const itemHeight = heights[index] ?? defaultHeight;
       const targetIndex = getShortestColumnIndex(cols);
 
       return cols.map((col, idx) =>
         idx === targetIndex
           ? {
-              items: [...col.items, item],
-              totalHeight: col.totalHeight + heights[item.index] + verticalGap,
+              items: [...col.items, { item, index }],
+              totalHeight: col.totalHeight + itemHeight + verticalGap,
             }
           : col
       );

@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useState } from "react";
 import {
   ScrollView,
   StyleSheet,
@@ -14,7 +14,7 @@ type Props<T> = {
   columnGap?: number;
   paddingHorizontal?: number;
   rowGap?: number;
-  renderItem: (item: T, width: number, index: number) => React.ReactNode;
+  renderItem: (item: T, index: number) => React.ReactNode;
 };
 
 const MasonryGrid = <T,>({
@@ -35,11 +35,6 @@ const MasonryGrid = <T,>({
     (normalizedWidth - paddingHorizontal * 2 - columnGap * (columnsCount - 1)) /
     columnsCount;
 
-  const indexedData = useMemo(
-    () => data.map((item, index) => ({ item, index })),
-    [data]
-  );
-
   const handleItemLayout = useCallback(
     (index: number, e: LayoutChangeEvent) => {
       const h = e.nativeEvent.layout.height;
@@ -50,7 +45,7 @@ const MasonryGrid = <T,>({
     []
   );
 
-  const columns = useMasonryColumns(indexedData, columnsCount, rowGap, heights);
+  const columns = useMasonryColumns(data, columnsCount, rowGap, heights);
 
   return (
     <ScrollView
@@ -61,8 +56,12 @@ const MasonryGrid = <T,>({
         {columns.map((column, columnIndex) => (
           <View key={`column-${columnIndex}`} style={{ flex: 1, rowGap }}>
             {column.map(({ item, index }) => (
-              <View key={index} onLayout={(e) => handleItemLayout(index, e)}>
-                {renderItem(item, columnWidth, index)}
+              <View
+                key={index}
+                style={{ width: columnWidth }}
+                onLayout={(e) => handleItemLayout(index, e)}
+              >
+                {renderItem(item, index)}
               </View>
             ))}
           </View>
