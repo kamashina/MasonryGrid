@@ -72,6 +72,7 @@ const App = () => {
 
         <MasonryGrid
           data={data}
+          keyExtractor={(item) => item.id}
           renderItem={(item) => <MasonryCard key={item.id} item={item} />}
         />
       </SafeAreaView>

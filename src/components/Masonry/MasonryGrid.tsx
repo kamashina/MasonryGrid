@@ -15,8 +15,8 @@ type Props<T> = {
   columnsCount?: number;
   columnGap?: number;
   paddingHorizontal?: number;
-  rowGap?: number;
   renderItem: (item: T, index: number) => React.ReactNode;
+  keyExtractor: (item: T, index: number) => string | number;
   style?: StyleProp<ViewStyle>;
   contentContainerStyle?: StyleProp<ViewStyle>;
   columnStyle?: StyleProp<ViewStyle>;
@@ -27,6 +27,7 @@ const MasonryGrid = <T,>({
   data,
   columnGap = 8,
   renderItem,
+  keyExtractor,
   columnsCount = 3,
   paddingHorizontal = 16,
   style,
@@ -74,7 +75,7 @@ const MasonryGrid = <T,>({
           >
             {column.map(({ item, index }) => (
               <View
-                key={index}
+                key={keyExtractor?.(item, index) || index}
                 style={[
                   styles.itemWrapper,
                   { width: columnWidth },
