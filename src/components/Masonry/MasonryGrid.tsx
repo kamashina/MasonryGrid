@@ -16,7 +16,7 @@ type Props<T> = {
   columnGap?: number;
   paddingHorizontal?: number;
   renderItem: (item: T, index: number) => React.ReactNode;
-  keyExtractor: (item: T, index: number) => string | number;
+  keyExtractor: (item: T, index: number) => React.Key | null | undefined;
   style?: StyleProp<ViewStyle>;
   contentContainerStyle?: StyleProp<ViewStyle>;
   columnStyle?: StyleProp<ViewStyle>;
